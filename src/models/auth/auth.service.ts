@@ -1,8 +1,20 @@
-import { Injectable } from "@nestjs/common"
+import { BadRequestException, Injectable } from "@nestjs/common"
+import * as bcrypt from "bcrypt"
+import { ConfigService } from "@nestjs/config"
+
+import { User } from "../user/user.entity"
+import { UserService } from "../user/user.service"
+import { SessionService } from "../session/session.service"
 
 @Injectable()
 export class AuthService {
-  register({
+  constructor(
+    private userService: UserService,
+    private sessionService: SessionService,
+    private configService: ConfigService
+  ) {}
+
+  async register({
     email,
     password,
     fullname
@@ -10,25 +22,38 @@ export class AuthService {
     email: string
     password: string
     fullname: string
-  }): string {
-    return "Hello World!"
+  }): Promise<User> {
+    const emailLow = email.toLowerCase()
+    const hashPass = await bcrypt.hash(
+      password,
+      Number(this.configService.get("SALT_ROUNDS"))
+    )
+
+    return this.userService.createUser({ email: emailLow, hashPass, fullname })
   }
 
-  login({
+  async logout({ token }: { token: string }): Promise<void> {
+    await this.sessionService.deleteUserSessionByToken(token)
+  }
+
+  async validateUser({
     email,
     password
   }: {
     email: string
     password: string
-  }): Promise<{ token: string }> {
-    return new Promise((resolve, reject) => {
-      resolve({ token: "test token" })
-    })
-  }
+  }): Promise<any> {
+    const user = await this.userService.getProfileBy({ email })
+    if (!user) {
+      throw new BadRequestException()
+    }
 
-  logout(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      resolve()
-    })
+    const passwordValid = await bcrypt.compare(password, user.password)
+    if (!passwordValid) return null
+
+    return {
+      user_id: user.id,
+      email: user.email
+    }
   }
 }

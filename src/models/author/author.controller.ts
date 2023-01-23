@@ -1,6 +1,7 @@
 import { Controller, Get, UseGuards, UseInterceptors } from "@nestjs/common"
-import { JwtAuthGuard } from "src/common/jwt-auth.guard"
+import { LocalAuthGuard } from "src/models/auth/local.auth.guard"
 import { ResponseInterceptor } from "src/common/response.interceptor"
+import { delay } from "src/common/utils"
 import { AuthorService } from "./author.service"
 
 @UseInterceptors(ResponseInterceptor)
@@ -11,9 +12,19 @@ import { AuthorService } from "./author.service"
 export class AuthorController {
   constructor(private readonly authorService: AuthorService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(LocalAuthGuard)
   @Get()
-  getProfile(): { authorId: number; name: string } {
-    return this.authorService.getAuthor()
+  async getAuthor(): Promise<{
+    authorId: number
+    name: string
+  }> {
+    const author = await this.authorService.getRandomAuthor()
+
+    await delay(5000)
+
+    return {
+      authorId: author.id,
+      name: author.name
+    }
   }
 }

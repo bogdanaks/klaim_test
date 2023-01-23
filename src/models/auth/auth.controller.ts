@@ -3,12 +3,16 @@ import {
   Controller,
   Delete,
   Post,
+  Req,
+  UseGuards,
   UseInterceptors,
   ValidationPipe
 } from "@nestjs/common"
+import { LocalAuthGuard } from "src/models/auth/local.auth.guard"
 import { ResponseInterceptor } from "src/common/response.interceptor"
-import { LoginDTO, RegisterDTO } from "./auth.dto"
+import { RegisterDTO } from "./auth.dto"
 import { AuthService } from "./auth.service"
+import { AuthenticatedGuard } from "./authenticated.guard"
 
 @UseInterceptors(ResponseInterceptor)
 @Controller({
@@ -18,26 +22,30 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post("/register")
-  async register(@Body(new ValidationPipe()) data: RegisterDTO): Promise<void> {
+  async register(@Body(new ValidationPipe()) data: RegisterDTO): Promise<{}> {
     await this.authService.register({
       email: data.email,
       password: data.password,
       fullname: data.fullname
     })
+
+    return {}
   }
 
+  @UseGuards(LocalAuthGuard)
   @Post("/login")
-  login(
-    @Body(new ValidationPipe()) data: LoginDTO
-  ): Promise<{ token: string }> {
-    return this.authService.login({
-      email: data.email,
-      password: data.password
-    })
+  login(@Req() req): { token: string } {
+    const sessionID = req.sessionID as string
+    return {
+      token: sessionID
+    }
   }
 
+  @UseGuards(AuthenticatedGuard)
   @Delete("/logout")
-  logout(): Promise<void> {
-    return this.authService.logout()
+  async logout(@Req() req): Promise<{}> {
+    const token = req.query.token as string
+    await this.authService.logout({ token })
+    return {}
   }
 }
