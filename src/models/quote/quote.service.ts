@@ -1,16 +1,21 @@
 import { Injectable } from "@nestjs/common"
+import { InjectRepository } from "@nestjs/typeorm"
+import { Repository } from "typeorm"
+import { Quote } from "./quote.entity"
 
 @Injectable()
 export class QuoteService {
-  getQuote(): {
-    authorId: number
-    quoteId: number
-    quote: string
-  } {
-    return {
-      authorId: 1,
-      quoteId: 1,
-      quote: "A day without laughter is a day wasted."
-    }
+  constructor(
+    @InjectRepository(Quote)
+    private quoteRepository: Repository<Quote>
+  ) {}
+
+  getQuoteByAuthorId(author_id: number): Promise<Quote> {
+    return this.quoteRepository
+      .createQueryBuilder("quote")
+      .select()
+      .where("quote.author_id = :author_id", { author_id })
+      .orderBy("RANDOM()")
+      .getOne()
   }
 }
