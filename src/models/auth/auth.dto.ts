@@ -14,14 +14,3 @@ export class RegisterDTO {
   @MaxLength(255)
   fullname: string
 }
-
-export class LoginDTO {
-  @IsString()
-  @IsEmail()
-  @MaxLength(255)
-  email: string
-
-  @IsString()
-  @MaxLength(255)
-  password: string
-}
