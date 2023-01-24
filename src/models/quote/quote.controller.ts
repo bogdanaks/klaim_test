@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import {
   Controller,
   Get,
@@ -9,8 +8,8 @@ import {
 } from "@nestjs/common"
 import { ResponseInterceptor } from "src/common/response.interceptor"
 import { delay } from "src/common/utils"
-import { LocalAuthGuard } from "src/models/auth/local.auth.guard"
 
+import { AuthenticatedGuard } from "../auth/authenticated.guard"
 import { GetQuoteDTO } from "./quote.dto"
 import { QuoteService } from "./quote.service"
 
@@ -22,8 +21,9 @@ import { QuoteService } from "./quote.service"
 export class QuoteController {
   constructor(private readonly quoteService: QuoteService) {}
 
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(AuthenticatedGuard)
   @Get()
+  /* eslint-disable indent */
   async getQuote(
     @Query(new ValidationPipe())
     data: GetQuoteDTO
