@@ -15,6 +15,10 @@ async function bootstrap() {
   const configService = app.get(ConfigService)
   const dataSource = app.get<SessionService>(SessionService)
 
+  app.enableCors({
+    origin: "*"
+  })
+
   app.enableVersioning({
     type: VersioningType.URI
   })
