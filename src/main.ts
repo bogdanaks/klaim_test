@@ -1,9 +1,9 @@
 import { VersioningType } from "@nestjs/common"
 import { ConfigService } from "@nestjs/config"
 import { NestFactory } from "@nestjs/core"
+import { TypeormStore } from "connect-typeorm"
 import * as session from "express-session"
 import * as passport from "passport"
-import { TypeormStore } from "connect-typeorm"
 
 import { AppModule } from "./models/app/app.module"
 import { SessionService } from "./models/session/session.service"

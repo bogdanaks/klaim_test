@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import {
   Column,
   CreateDateColumn,
@@ -7,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from "typeorm"
+
 import { Author } from "../author/author.entity"
 
 @Entity({ name: "quotes" })

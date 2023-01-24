@@ -3,8 +3,8 @@ import { AuthUserType } from "src/common/interfaces"
 import { ResponseInterceptor } from "src/common/response.interceptor"
 import { AuthUser } from "src/common/user.decorator"
 
-import { UserService } from "./user.service"
 import { AuthenticatedGuard } from "../auth/authenticated.guard"
+import { UserService } from "./user.service"
 
 @UseInterceptors(ResponseInterceptor)
 @Controller({
