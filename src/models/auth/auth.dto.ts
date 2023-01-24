@@ -1,4 +1,5 @@
-import { IsString, IsEmail, MaxLength } from "class-validator"
+/* eslint-disable indent */
+import { IsEmail, IsString, MaxLength } from "class-validator"
 
 export class RegisterDTO {
   @IsString()

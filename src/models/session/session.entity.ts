@@ -1,5 +1,5 @@
-import { Column, DeleteDateColumn, Entity, Index, PrimaryColumn } from "typeorm"
 import { ISession } from "connect-typeorm"
+import { Column, DeleteDateColumn, Entity, Index, PrimaryColumn } from "typeorm"
 
 @Entity({ name: "user_sessions" })
 export class Session implements ISession {

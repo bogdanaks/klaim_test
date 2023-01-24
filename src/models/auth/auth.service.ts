@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable, Logger } from "@nestjs/common"
-import * as bcrypt from "bcrypt"
 import { ConfigService } from "@nestjs/config"
+import * as bcrypt from "bcrypt"
 
+import { SessionService } from "../session/session.service"
 import { User } from "../user/user.entity"
 import { UserService } from "../user/user.service"
-import { SessionService } from "../session/session.service"
 
 @Injectable()
 export class AuthService {
