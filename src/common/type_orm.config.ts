@@ -1,11 +1,12 @@
-import { DataSource } from "typeorm"
 import { ConfigService } from "@nestjs/config"
 import { config } from "dotenv"
+import { DataSource } from "typeorm"
+
+import { Init1674556899386 } from "../../migrations/1674556899386-init"
 import { Author } from "../models/author/author.entity"
 import { Quote } from "../models/quote/quote.entity"
 import { Session } from "../models/session/session.entity"
 import { User } from "../models/user/user.entity"
-import { Init1674556899386 } from "../../migrations/1674556899386-init"
 
 config()
 

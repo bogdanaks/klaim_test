@@ -8,8 +8,9 @@ import {
   UseInterceptors,
   ValidationPipe
 } from "@nestjs/common"
-import { LocalAuthGuard } from "src/models/auth/local.auth.guard"
 import { ResponseInterceptor } from "src/common/response.interceptor"
+import { LocalAuthGuard } from "src/models/auth/local.auth.guard"
+
 import { RegisterDTO } from "./auth.dto"
 import { AuthService } from "./auth.service"
 import { AuthenticatedGuard } from "./authenticated.guard"
@@ -22,7 +23,9 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post("/register")
-  async register(@Body(new ValidationPipe()) data: RegisterDTO): Promise<{}> {
+  async register(
+    @Body(new ValidationPipe()) data: RegisterDTO
+  ): Promise<object> {
     await this.authService.register({
       email: data.email,
       password: data.password,
@@ -43,7 +46,7 @@ export class AuthController {
 
   @UseGuards(AuthenticatedGuard)
   @Delete("/logout")
-  async logout(@Req() req): Promise<{}> {
+  async logout(@Req() req): Promise<object> {
     const token = req.query.token as string
     await this.authService.logout({ token })
     return {}

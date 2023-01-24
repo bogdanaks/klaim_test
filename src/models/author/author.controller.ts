@@ -1,7 +1,8 @@
 import { Controller, Get, UseGuards, UseInterceptors } from "@nestjs/common"
-import { LocalAuthGuard } from "src/models/auth/local.auth.guard"
 import { ResponseInterceptor } from "src/common/response.interceptor"
 import { delay } from "src/common/utils"
+import { LocalAuthGuard } from "src/models/auth/local.auth.guard"
+
 import { AuthorService } from "./author.service"
 
 @UseInterceptors(ResponseInterceptor)

@@ -1,4 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common"
+
 import { SessionService } from "../session/session.service"
 
 @Injectable()
