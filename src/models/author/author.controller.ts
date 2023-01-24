@@ -1,7 +1,7 @@
 import { Controller, Get, UseGuards, UseInterceptors } from "@nestjs/common"
 import { ResponseInterceptor } from "src/common/response.interceptor"
 import { delay } from "src/common/utils"
-import { LocalAuthGuard } from "src/models/auth/local.auth.guard"
+import { AuthenticatedGuard } from "src/models/auth/authenticated.guard"
 
 import { AuthorService } from "./author.service"
 
@@ -13,7 +13,7 @@ import { AuthorService } from "./author.service"
 export class AuthorController {
   constructor(private readonly authorService: AuthorService) {}
 
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(AuthenticatedGuard)
   @Get()
   async getAuthor(): Promise<{
     authorId: number
