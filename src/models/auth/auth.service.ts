@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common"
+import { BadRequestException, Injectable, Logger } from "@nestjs/common"
 import * as bcrypt from "bcrypt"
 import { ConfigService } from "@nestjs/config"
 
@@ -8,6 +8,8 @@ import { SessionService } from "../session/session.service"
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name)
+
   constructor(
     private userService: UserService,
     private sessionService: SessionService,
@@ -45,6 +47,7 @@ export class AuthService {
   }): Promise<any> {
     const user = await this.userService.getProfileBy({ email })
     if (!user) {
+      this.logger.log(`User ${email} isn't exist`)
       throw new BadRequestException()
     }
 
